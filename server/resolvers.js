@@ -23,7 +23,10 @@ export const resolvers = {
 
     Subscription: {
         messageAdded: {
-            subscribe: () => pubsub.asyncIterator('MESSAGE_ADDED'),
+            subscribe: (_root, _args, {user}) => {
+                if (!user) throw unauthorizedError();
+                return pubsub.asyncIterator('MESSAGE_ADDED');
+            },
         },
     }
 };
